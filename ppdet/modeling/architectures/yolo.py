@@ -94,6 +94,8 @@ class YOLOv3(BaseArch):
 
         else:
             yolo_head_outs = self.yolo_head(neck_feats)
+            if getattr(self, 'rknn_optimize', False):
+                return yolo_head_outs
 
             if self.for_mot:
                 boxes_idx, bbox, bbox_num, nms_keep_idx = self.post_process(

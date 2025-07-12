@@ -55,6 +55,11 @@ def parse_args():
         default=None,
         type=str,
         help="Configuration file of slim method.")
+    parser.add_argument(
+        "--rknn",
+        action='store_true',
+        default=False,
+        help="Export model optimized for rknn.")
     args = parser.parse_args()
     return args
 
@@ -70,7 +75,7 @@ def run(FLAGS, cfg):
         trainer.load_weights(cfg.weights)
 
     # export model
-    trainer.export(FLAGS.output_dir)
+    trainer.export(FLAGS.output_dir, FLAGS.rknn)
 
     if FLAGS.export_serving_model:
         from paddle_serving_client.io import inference_model_to_serving

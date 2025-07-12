@@ -186,6 +186,9 @@ class PPYOLOEHead(nn.Layer):
         return anchor_points, stride_tensor
 
     def forward_eval(self, feats):
+        if getattr(self, 'rknn_optimize', False):
+            rk_out_list = []
+
         if self.eval_size:
             anchor_points, stride_tensor = self.anchor_points, self.stride_tensor
         else:
@@ -198,6 +201,13 @@ class PPYOLOEHead(nn.Layer):
             cls_logit = self.pred_cls[i](self.stem_cls[i](feat, avg_feat) +
                                          feat)
             reg_dist = self.pred_reg[i](self.stem_reg[i](feat, avg_feat))
+
+            if getattr(self, 'rknn_optimize', False):
+                rk_out_list.append(reg_dist)
+                rk_out_list.append(F.sigmoid(cls_logit))
+                rk_out_list.append(paddle.clip(rk_out_list[-1].sum(1, keepdim=True), 0, 1))
+                continue
+
             reg_dist = reg_dist.reshape([-1, 4, self.reg_max + 1, l]).transpose(
                 [0, 2, 3, 1])
             reg_dist = self.proj_conv(F.softmax(reg_dist, axis=1)).squeeze(1)
@@ -205,6 +215,9 @@ class PPYOLOEHead(nn.Layer):
             cls_score = F.sigmoid(cls_logit)
             cls_score_list.append(cls_score.reshape([-1, self.num_classes, l]))
             reg_dist_list.append(reg_dist)
+        
+        if getattr(self, 'rknn_optimize', False):
+            return rk_out_list
 
         cls_score_list = paddle.concat(cls_score_list, axis=-1)
         reg_dist_list = paddle.concat(reg_dist_list, axis=1)

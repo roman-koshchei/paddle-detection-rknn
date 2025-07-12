@@ -1044,7 +1044,7 @@ class Trainer(object):
 
         return static_model, pruned_input_spec
 
-    def export(self, output_dir='output_inference'):
+    def export(self, output_dir='output_inference', rknn_optimize=False):
         self.model.eval()
 
         if hasattr(self.cfg, 'export') and 'fuse_conv_bn' in self.cfg[
@@ -1055,6 +1055,11 @@ class Trainer(object):
         save_dir = os.path.join(output_dir, model_name)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
+
+        if rknn_optimize == True:
+            print('export model optimized for RKNN')
+            self.model.rknn_optimize = True
+            self.model.yolo_head.rknn_optimize = True
 
         static_model, pruned_input_spec = self._get_infer_cfg_and_input_spec(
             save_dir)
