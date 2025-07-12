@@ -53,3 +53,7 @@ After exported model for RKNN format using previous section export to ONNX.
 ```bash
 uv pip install paddle2onnx
 ```
+
+```bash
+uv run paddle2onnx --model_dir output_inference/ppyoloe_plus_crn_s_80e_coco --model_filename model.pdmodel --params_filename model.pdiparams --opset_version 11 --save_file ppyoloe_plus_crn_s_80e_coco.onnx
+```
