@@ -11,7 +11,7 @@ uv venv --python 3.9
 I use CPU installation of PaddlePaddle, becasue this will be used just for export of model.
 
 ```bash
-uv pip install paddlepaddle==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+uv pip install paddlepaddle==2.6.2 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 ```
 
 ```bash
@@ -44,4 +44,12 @@ Test run export from RKNN model zoo:
 
 ```bash
 uv run tools/export_model.py -c configs/ppyoloe/ppyoloe_plus_crn_s_80e_coco.yml -o weights=https://paddledet.bj.bcebos.com/models/ppyoloe_plus_crn_s_80e_coco.pdparams exclude_nms=True trt=True exclude_post_process=True use_gpu=False --rknn
+```
+
+## ONNX Export
+
+After exported model for RKNN format using previous section export to ONNX.
+
+```bash
+uv pip install paddle2onnx
 ```
