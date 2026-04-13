@@ -51,7 +51,7 @@ uv run tools/export_model.py -c configs/ppyoloe/ppyoloe_plus_crn_s_80e_coco.yml 
 After exported model for RKNN format using previous section export to ONNX.
 
 ```bash
-uv pip install paddle2onnx
+uv pip install "paddle2onnx==1.3.1"
 ```
 
 ```bash
