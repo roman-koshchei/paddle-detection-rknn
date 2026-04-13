@@ -15,7 +15,7 @@ uv pip install paddlepaddle==2.6.2 -i https://www.paddlepaddle.org.cn/packages/s
 ```
 
 ```bash
-uv pip install setuptools<81
+uv pip install "setuptools<81"
 ```
 
 ```bash
