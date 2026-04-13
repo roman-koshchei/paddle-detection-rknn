@@ -27,7 +27,7 @@ uv pip install -r requirements.txt
 ```
 
 ```bash
-uv uv run setup.py install
+uv run setup.py install
 ```
 
 ```bash
